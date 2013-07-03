@@ -10,6 +10,9 @@ var app = express();
 app.listen(process.env.PORT || 5000);
 console.log('Running ... ');
 
+/* Compress using gzip */
+app.use(express.compress());
+
 /* Setup Express to serve static files */
 app.use(express.static(__dirname + '/public/views'));
 
@@ -19,9 +22,6 @@ app.use(express.bodyParser());
 /* To handle Cookies */
 app.use(express.cookieParser());
 app.use(app.router);	
-
-/* Compress using gzip */
-app.use(express.compress());
 
 /* Set view engine to jade */
 app.set('view engine', 'jade');
