@@ -18,7 +18,7 @@ app.use(express.bodyParser());
 
 /* To handle Cookies */
 app.use(express.cookieParser());
-app.use(app.router);
+app.use(app.router);	
 
 /* Set view engine to jade */
 app.set('view engine', 'jade');
