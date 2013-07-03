@@ -20,6 +20,9 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(app.router);	
 
+/* Compress using gzip */
+app.use(express.compress());
+
 /* Set view engine to jade */
 app.set('view engine', 'jade');
 
