@@ -80,78 +80,80 @@ exports.save = function(req, res) {
       var input = req.body;
 
       /* Validate our data */
-      if(input.url.trim()==""||input.shortcut.length!=1){
+      if(input.url.trim()==""||input.shortcut.length<1){
 
         /* If invalid redirect to index */ 
         res.redirect("/");
-      }
-
-      /* Be Carefull ! Cookies are affected when res is sent */
-
-      /* Get the title using regrex */
-      if(input.url.indexOf("http://") === -1){
-        var url = "http://"+input.url;
-      } else {
-        var url = input.url;
-      }
-
-      /* Parse the url to get the hostname */
-      var parsed = url_parser.parse(url);
-
-      /* If the url is invalid we have no hostname */
-      if(parsed.hostname!==undefined){
-
-        /* remove wwww and then split into parts */
-        var domains = parsed.hostname.replace("www.","").split('.');
-
-        /* If we have multiple parts (subdomains), use the second to last part */
-        if(domains.length-2>=0) var domain = domains[domains.length-2];
-        else var domain = domains[0];
-
-        /* Capitalize the first letter */
-        var title = domain.charAt(0).toUpperCase() + domain.slice(1);
 
       } else {
 
-        /* If invalid domain just use the url as title */
-        var title = url.replace("http://","");
+        /* Be Carefull ! Cookies are affected when res is sent */
 
+        /* Get the title using regrex */
+        if(input.url.indexOf("http://") === -1){
+          var url = "http://"+input.url;
+        } else {
+          var url = input.url;
+        }
+
+        /* Parse the url to get the hostname */
+        var parsed = url_parser.parse(url);
+
+        /* If the url is invalid we have no hostname */
+        if(parsed.hostname!==undefined){
+
+          /* remove wwww and then split into parts */
+          var domains = parsed.hostname.replace("www.","").split('.');
+
+          /* If we have multiple parts (subdomains), use the second to last part */
+          if(domains.length-2>=0) var domain = domains[domains.length-2];
+          else var domain = domains[0];
+
+          /* Capitalize the first letter */
+          var title = domain.charAt(0).toUpperCase() + domain.slice(1);
+
+        } else {
+
+          /* If invalid domain just use the url as title */
+          var title = url.replace("http://","");
+
+        }
+
+        /* Get random color */
+        var colors = [ "F26D6F", "75B4E2","707CBC","B7B7B7","87CDAB","DDE574","A775B3", "AA925C", "C45151", "856FA8", "CA7FCC","E89D3A" ];
+        if(default_colors[title.toLowerCase()]!==undefined){
+
+          /* If that hostname is in our default Object */
+          var color = default_colors[title.toLowerCase()];
+
+        } else {
+
+          /* If not assign random color */
+          var random = Math.floor(Math.random()*colors.length);
+          var color = colors[random];
+
+        }
+
+        /* Create the object 'bookmark' */
+        var bookmark = {
+          "shortcut" : input.shortcut.charAt(0),
+          "url" : url,
+          title :title,
+          color : color
+        };
+
+        /* Get the data from the cookie which is valid (tested before)
+           and add the bookmark via push() */
+        var data = req.cookies.vecturia_data;
+        data.push(bookmark);
+
+        /* Now send a new cookie to the response */
+        res.cookie('vecturia_data', data, { maxAge: 2592000*1000, httpOnly: true });
+        
+        /* We redirect to have the right url again
+           rendering index here would be an option too */
+      	res.redirect('/');
       }
-
-      /* Get random color */
-      var colors = [ "F26D6F", "75B4E2","707CBC","B7B7B7","87CDAB","DDE574","A775B3", "AA925C", "C45151", "856FA8", "CA7FCC","E89D3A" ];
-      if(default_colors[title.toLowerCase()]!==undefined){
-
-        /* If that hostname is in our default Object */
-        var color = default_colors[title.toLowerCase()];
-
-      } else {
-
-        /* If not assign random color */
-        var random = Math.floor(Math.random()*colors.length);
-        var color = colors[random];
-
-      }
-
-      /* Create the object 'bookmark' */
-      var bookmark = {
-        "shortcut" : input.shortcut.charAt(0),
-        "url" : url,
-        title :title,
-        color : color
-      };
-
-      /* Get the data from the cookie which is valid (tested before)
-         and add the bookmark via push() */
-      var data = req.cookies.vecturia_data;
-      data.push(bookmark);
-
-      /* Now send a new cookie to the response */
-      res.cookie('vecturia_data', data, { maxAge: 2592000*1000, httpOnly: true });
-      
-      /* We redirect to have the right url again
-         rendering index here would be an option too */
-    	res.redirect('/');
 
     }
 }
