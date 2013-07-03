@@ -1,0 +1,74 @@
+!!!5
+html
+	head
+		title expaflyr | #{title}
+		link(rel='stylesheet', href='css/layout.css')
+		block css
+	body
+		script(type='text/javascript', src='js/jquery-1.8.2.min.js')
+		script(type='text/javascript', src='js/search.js')
+		script.
+		
+			// Gives the current search bar state
+			var state = 1;
+			// Settings open or not
+			var settings = 0;
+
+		#secondary_panel
+			block secondary_panel
+		#main_panel
+			.main_header
+				#header_settings(onclick='settings = toggleSettings(settings)')
+				#header_logo
+					img(src='static/expa_logo.png', alt='')
+				input#header_transparent(type='text',value=header, onkeyup='state = searchKey(state, event);',onclick='searchFocus(state);')
+			.dropdown#dropdown1
+				.dropdown_option.color_lightblue(onclick='state = searchLoad(2, "today");') today
+				.dropdown_option.color_red(onclick='state = searchLoad(2, "tomorrow");') tomorrow
+				.dropdown_option.color_yellow(onclick='state = searchLoad(2, "this week");') this week
+				.dropdown_option.color_purple(onclick='state = searchLoad(2, "this month");') this month
+				.dropdown_option.color_lightgreen(onclick='state = searchLoad(2, "whenever");') whenever
+				.dropdown_option.color_black(onclick='searchClear();') close
+				
+			.dropdown#dropdown2
+				.dropdown_option.color_lightblue(onclick='state = searchLoad(3, "for");') for 
+					span.unimportant students
+				.dropdown_option.color_red(onclick='state = searchLoad(3, "for only");') for only 
+					span.unimportant students
+				.dropdown_option.color_yellow(onclick='state = searchLoad(4, "from");') from 
+					span.unimportant section
+				.dropdown_option.color_purple(onclick='state = searchLoad(4, "from only");') from only 
+					span.unimportant section
+				.dropdown_option.color_lightgreen(onclick='state = searchLoad(5, "organozed by");') organized by
+				.dropdown_option.color_darkblue(onclick='state = searchLoad(2, "at EPFL");') at EPFL
+				.dropdown_option.color_orange(onclick='state = searchLoad(2, "in room");') in room
+				.dropdown_option.color_blue(onclick='state = searchLoad(2, "with more than");') with more than
+				.dropdown_option.color_black(onclick='searchClear();') close
+
+			.dropdown#dropdown3
+				.dropdown_option.color_lightblue(onclick='state = searchLoad(2, "bachelors");') bachelors
+				.dropdown_option.color_red(onclick='state = searchLoad(2, "masters");') masters
+				.dropdown_option.color_yellow(onclick='state = searchLoad(2, "PhDs");') PhDs
+				.dropdown_option.color_purple(onclick='state = searchLoad(2, "PhDs");') students
+				.dropdown_option.color_lightgreen(onclick='state = searchLoad(2, "PhDs");') professors
+				.dropdown_option.color_black(onclick='searchClear();') close
+
+			.dropdown#dropdown4
+				.dropdown_option.color_lightblue(onclick='state = searchLoad(2, "IC");') IC
+				.dropdown_option.color_red(onclick='state = searchLoad(2, "SV");') SV
+				.dropdown_option.color_yellow(onclick='state = searchLoad(2, "MX");') MX
+				.dropdown_option.color_purple(onclick='state = searchLoad(2, "EL");') EL
+				.dropdown_option.color_black(onclick='searchClear();') close
+
+			.dropdown#dropdown5
+				.dropdown_option.color_lightblue(onclick='state = searchLoad(2, "Agepoly");') Agepoly
+				.dropdown_option.color_red(onclick='state = searchLoad(2, "CoachingIC");') Coaching IC
+				.dropdown_option.color_yellow(onclick='state = searchLoad(2, "Balelec");') Balelec
+				.dropdown_option.color_purple(onclick='state = searchLoad(2, "Vivapoly");') Vivapoly
+				.dropdown_option.color_black(onclick='searchClear();') close
+
+			.main_center
+				block content
+				.footer_space
+
+			block footer
