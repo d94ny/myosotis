@@ -7,8 +7,8 @@ var route = require('./controllers/route');
 var app = express();
 
 /* Run the app on port 8888 */
-app.listen(8888);
-console.log('Running on 8888 ... ');
+app.listen(process.env.PORT || 5000);
+console.log('Running ... ');
 
 /* Setup Express to serve static files */
 app.use(express.static(__dirname + '/public/views'));
