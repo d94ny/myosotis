@@ -1,0 +1,25 @@
+This is how to deploy your app.
+
+1. Create the app on heroku.com
+2. In terminal create a local git repo at your project root :
+	$ git init
+	$ git add .
+	$ git commit -m "Initial commit"
+3. Add a remote repository
+	$ git remote add <name> <git url>
+4. Push to your remote repository
+	$ git push <name> <branch> 
+	(branch must be master)
+5. Create a Dyno
+	$ heroku ps:scale web=1
+
+0. Be careful ! You can't assign a port. Heroku doesn't like that : process.env.PORT || 5000
+0. Check status of dynes : $ heroku ps
+0. View you remote repositories : $ git remote -v
+0. Remove remote repositories : $ git remote rm <name> 
+
+Also useful :
+https://devcenter.heroku.com/articles/nodejs
+https://devcenter.heroku.com/articles/git
+
+https://devcenter.heroku.com/articles/custom-domains

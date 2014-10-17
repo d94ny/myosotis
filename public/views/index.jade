@@ -8,28 +8,17 @@ html
 
 	body
 		script(type='text/javascript', src='js/jquery-1.8.2.min.js')
-		script(type='text/javascript', src='js/jquery.hotkeys.js')
-
-		// https://github.com/jeresig/jquery.hotkeys
-
-		!= "<script type='text/javascript'>"
-		- if (bookmarks!=null&&bookmarks instanceof Array)
-			- for (var i=0;i<bookmarks.length;i++)
-				$(document).bind('keydown', '#{bookmarks[i].shortcut.toLowerCase()}', function(e) { window.open('#{bookmarks[i].url}'); });
-		!= "</script>"
 
 		.dropdown
-			- if (bookmarks!=null&&bookmarks instanceof Array)
-				- for (var i=0;i<bookmarks.length;i++)
-					a.dropdown_option(href='#{bookmarks[i].url}',target='_blank', style='background-color:##{bookmarks[i].color}')
-						.dropdown_key #{bookmarks[i].shortcut.toUpperCase()}
-						| #{bookmarks[i].title}
+			- if (todos!=null&&todos instanceof Array)
+				- for (var i=0;i<todos.length;i++)
+					a.dropdown_option(style='background-color:##{todos[i].color}')
+						| #{todos[i].content}
 						form(action='/remove',method='post')
 							input(type='hidden',name='index',value='#{i}')
 							input.add(type='submit',value='X')
 
 			div.dropdown_option.grey_light
 				form(action='/add',method='post')
-					input.shortcut(type='text', value='X',name='shortcut')
 					input.add(type='submit',value='+')
-					input(type='text', value='http://',name='url')
+					input(type='text', value='Buy Milk',name='content')

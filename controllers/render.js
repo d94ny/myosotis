@@ -2,7 +2,7 @@
 /* We just render stuff */
 exports.index = function(res,data){
 	res.render('index', {
-      bookmarks: data
+      todos: data
     },function(err,html){
 
       /* err contains a possible error
